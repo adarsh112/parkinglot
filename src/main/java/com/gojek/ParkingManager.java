@@ -8,38 +8,27 @@ import com.gojek.model.Response;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public final class ParkingManager {
+public class ParkingManager {
 
-    private Map<Integer, Car> allotedMap;
-    private Queue<Integer> availableSlots;
-    private int totalSlots;
+    private static Map<Integer, Car> allotedMap;
+    private static Queue<Integer> availableSlots;
+    private static int totalSlots;
 
-    private static ParkingManager instance;
-
-    private ParkingManager(Integer totalSlots) {
-        this.allotedMap = new HashMap<>();
-        this.availableSlots = new PriorityQueue<>(totalSlots);
+    public static Response init(Integer totalSlots) {
+        totalSlots = totalSlots;
+        allotedMap = new HashMap<>();
+        availableSlots = new PriorityQueue<>(totalSlots);
         for(int i=1; i<=totalSlots; i++){
             availableSlots.add(i);
         }
-        this.totalSlots = totalSlots;
+
+        return Response.builder().setMessage("Created a parking lot with "+ totalSlots +" slots").build();
     }
 
-    public static ParkingManager init(Integer totalSlots) {
-        if(instance == null){
-            synchronized (ParkingManager.class){
-                if(instance == null){
-                    instance = new ParkingManager(totalSlots);
-                }
-            }
-        }
-        return instance;
+    public static int getAvailableSlots(){
+        return availableSlots.size();
     }
-
-    public int getAvailableSlots(){
-        return this.availableSlots.size();
-    }
-    public Response parkCar(Request request){
+    public static Response parkCar(Request request){
         if(availableSlots.isEmpty()){
             return Response.builder().setMessage("Sorry, parking lot is full").build();
         }
@@ -48,20 +37,21 @@ public final class ParkingManager {
         return Response.builder().setMessage("Allocated slot number: "+ slot).build();
     }
 
-    public Response status(Request request){
+    public static Response status(Request request){
         return Response.builder().setStatusMap(allotedMap).build();
     }
 
-    public Response leaveParking(Request request){
+    public static Response leaveParking(Request request){
         Integer slot = request.getSlotNumber();
         if(!allotedMap.containsKey(slot)){
             return Response.builder().setMessage("The slot number is not allotted to any car").build();
         }
         allotedMap.remove(slot);
+        availableSlots.add(slot);
         return Response.builder().setMessage("Slot number "+ slot + " is free").build();
     }
 
-    public Response getRegNoForColour(Request request){
+    public static Response getRegNoForColour(Request request){
         Colour colour = request.getColour();
         List<String> regNumbers = allotedMap.values().stream()
                 .filter(c -> colour == c.getColour())
@@ -74,7 +64,7 @@ public final class ParkingManager {
         return Response.builder().setRegNumbers(regNumbers).build();
     }
 
-    public Response getSlotsForColour(Request request){
+    public static Response getSlotsForColour(Request request){
         Colour colour = request.getColour();
         List<Integer> slotNumbers = allotedMap.entrySet().stream()
                 .filter(e -> colour == e.getValue().getColour())
@@ -87,7 +77,7 @@ public final class ParkingManager {
         return Response.builder().setSlotNumbers(slotNumbers).build();
     }
 
-    public Response getSlotNoForRegNo(Request request){
+    public static Response getSlotNoForRegNo(Request request){
         String regNo = request.getRegNo();
         Optional<Map.Entry<Integer, Car>> entryOptional = allotedMap.entrySet().stream()
                 .filter(e -> regNo.equals(e.getValue().getRegNo())).findFirst();

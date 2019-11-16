@@ -17,6 +17,9 @@ public class Response {
         this.statusMap = statusMap;
     }
 
+    public Boolean hasMessage(){
+        return this.message != null && this.message.length() > 0;
+    }
     public String getMessage() {
         return message;
     }

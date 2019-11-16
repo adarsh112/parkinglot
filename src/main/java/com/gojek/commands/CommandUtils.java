@@ -7,9 +7,13 @@ import java.util.Optional;
 
 public class CommandUtils {
 
-    public static boolean isValidInteger(String s) {
+    public static boolean isValidSlotNumber(String s) {
         try {
             Integer i = Integer.parseInt(s);
+
+            if(i <= 0){
+                return false;
+            }
         } catch (NumberFormatException e) {
             return false;
         }
