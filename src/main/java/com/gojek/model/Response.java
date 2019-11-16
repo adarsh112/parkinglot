@@ -17,9 +17,10 @@ public class Response {
         this.statusMap = statusMap;
     }
 
-    public Boolean hasMessage(){
+    public Boolean hasMessage() {
         return this.message != null && this.message.length() > 0;
     }
+
     public String getMessage() {
         return message;
     }
@@ -60,7 +61,7 @@ public class Response {
         this.slotNumberForRegNo = slotNumberForRegNo;
     }
 
-    public static class ResponseBuilder{
+    public static class ResponseBuilder {
         private String message;
         private Map<Integer, Car> statusMap;
         private List<String> regNumbers;
@@ -92,7 +93,7 @@ public class Response {
             return this;
         }
 
-        public Response build(){
+        public Response build() {
             Response response = new Response(this.message, this.statusMap);
             response.setSlotNumberForRegNo(this.slotNumberForRegNo);
             response.setRegNumbers(this.regNumbers);
@@ -101,7 +102,7 @@ public class Response {
         }
     }
 
-    public static ResponseBuilder builder(){
+    public static ResponseBuilder builder() {
         return new ResponseBuilder();
     }
 }

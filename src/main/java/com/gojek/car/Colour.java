@@ -23,9 +23,9 @@ public enum Colour {
         return name;
     }
 
-    public static Optional<Colour> getColourByName(String name){
-        for(Colour colour : Colour.values()){
-            if(colour.getName().equals(name)){
+    public static Optional<Colour> getColourByName(String name) {
+        for (Colour colour : Colour.values()) {
+            if (colour.getName().equals(name)) {
                 return Optional.of(colour);
             }
         }

@@ -9,39 +9,39 @@ import com.gojek.model.Response;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public enum Command implements CommandExecutor{
+public enum Command implements CommandExecutor {
 
     CREATE_PARKING_LOT("create_parking_lot", (command) -> {
 
-            String[] args = ((String) command).split(" ");
-            if(args.length != 2){
-                System.out.println("please provide total number of slots");
-                return;
-            }
+        String[] args = ((String) command).split(" ");
+        if (args.length != 2) {
+            System.out.println("please provide total number of slots");
+            return;
+        }
 
-            if(!CommandUtils.isValidSlotNumber(args[1])){
-                System.out.println("please provide a valid total number of slots");
-                return;
-            }
-            Response response = ParkingManager.init(Integer.parseInt(args[1]));
+        if (!CommandUtils.isValidSlotNumber(args[1])) {
+            System.out.println("please provide a valid total number of slots");
+            return;
+        }
+        Response response = ParkingManager.init(Integer.parseInt(args[1]));
 
-            System.out.println(response.getMessage());
+        System.out.println(response.getMessage());
     }),
 
     PARK_SLOT("park", (command) -> {
 
         String[] args = ((String) command).split(" ");
-        if(args.length != 3){
+        if (args.length != 3) {
             System.out.println("please provide reg no and Car colour");
             return;
         }
 
-        if(!CommandUtils.isValidRegNo(args[1])){
+        if (!CommandUtils.isValidRegNo(args[1])) {
             System.out.println("please provide a valid reg no");
             return;
         }
 
-        if(!CommandUtils.isValidColour(args[2])){
+        if (!CommandUtils.isValidColour(args[2])) {
             System.out.println("please provide valid Car colour in [Red, White, Yellow, Black, Blue, Green, Silver, Orange, Grey]");
             return;
         }
@@ -57,12 +57,12 @@ public enum Command implements CommandExecutor{
     LEAVE_SLOT("leave", (command) -> {
 
         String[] args = ((String) command).split(" ");
-        if(args.length != 2){
+        if (args.length != 2) {
             System.out.println("please provide the slot");
             return;
         }
 
-        if(!CommandUtils.isValidSlotNumber(args[1])){
+        if (!CommandUtils.isValidSlotNumber(args[1])) {
             System.out.println("please provide a valid slot number");
             return;
         }
@@ -82,8 +82,8 @@ public enum Command implements CommandExecutor{
         Map<Integer, Car> statusMap = response.getStatusMap();
         System.out.println("Slot No.  Registration   No Colour");
 
-        if(statusMap != null){
-            for(Integer slot : statusMap.keySet()){
+        if (statusMap != null) {
+            for (Integer slot : statusMap.keySet()) {
                 Car car = statusMap.get(slot);
                 System.out.print(slot);
                 System.out.print("         ");
@@ -97,12 +97,12 @@ public enum Command implements CommandExecutor{
     REG_NO_FOR_CAR_COLOUR("registration_numbers_for_cars_with_colour", (command) -> {
 
         String[] args = ((String) command).split(" ");
-        if(args.length != 2){
+        if (args.length != 2) {
             System.out.println("please provide the colour");
             return;
         }
 
-        if(!CommandUtils.isValidColour(args[1])){
+        if (!CommandUtils.isValidColour(args[1])) {
             System.out.println("please provide valid Car colour in [Red, White, Yellow, Black, Blue, Green, Silver, Orange, Grey]");
             return;
         }
@@ -111,9 +111,9 @@ public enum Command implements CommandExecutor{
                 .setColour(Colour.getColourByName(args[1]).get())
                 .build());
 
-        if(response.hasMessage()){
+        if (response.hasMessage()) {
             System.out.println(response.getMessage());
-        }else {
+        } else {
             System.out.println(String.join(", ", response.getRegNumbers()));
         }
 
@@ -122,12 +122,12 @@ public enum Command implements CommandExecutor{
     SLOT_FOR_CAR_COLOUR("slot_numbers_for_cars_with_colour", (command) -> {
 
         String[] args = ((String) command).split(" ");
-        if(args.length != 2){
+        if (args.length != 2) {
             System.out.println("please provide the colour");
             return;
         }
 
-        if(!CommandUtils.isValidColour(args[1])){
+        if (!CommandUtils.isValidColour(args[1])) {
             System.out.println("please provide a valid Car colour in [Red, White, Yellow, Black, Blue, Green, Silver, Orange, Grey]");
             return;
         }
@@ -136,9 +136,9 @@ public enum Command implements CommandExecutor{
                 .setColour(Colour.getColourByName(args[1]).get())
                 .build());
 
-        if(response.hasMessage()){
+        if (response.hasMessage()) {
             System.out.println(response.getMessage());
-        }else {
+        } else {
             String slots = response.getSlotNumbers().stream()
                     .map(s -> String.valueOf(s)).collect(Collectors.joining(", "));
             System.out.println(slots);
@@ -148,12 +148,12 @@ public enum Command implements CommandExecutor{
     SLOT_NO_FOR_REG_NO("slot_number_for_registration_number", (command) -> {
 
         String[] args = ((String) command).split(" ");
-        if(args.length != 2){
+        if (args.length != 2) {
             System.out.println("please provide the registration number");
             return;
         }
 
-        if(!CommandUtils.isValidRegNo(args[1])){
+        if (!CommandUtils.isValidRegNo(args[1])) {
             System.out.println("please provide a valid registration number");
             return;
         }
@@ -161,9 +161,9 @@ public enum Command implements CommandExecutor{
                 .setRegNo(args[1])
                 .build());
 
-        if(response.hasMessage()){
+        if (response.hasMessage()) {
             System.out.println(response.getMessage());
-        }else {
+        } else {
             System.out.println(response.getSlotNumberForRegNo());
         }
     });

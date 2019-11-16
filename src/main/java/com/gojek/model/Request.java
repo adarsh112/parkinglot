@@ -37,7 +37,7 @@ public class Request {
         this.slotNumber = slotNumber;
     }
 
-    public static class RequestBuilder{
+    public static class RequestBuilder {
         private String regNo;
         private Colour colour;
         private Integer slotNumber;
@@ -57,12 +57,12 @@ public class Request {
             return this;
         }
 
-        public Request build(){
+        public Request build() {
             return new Request(this.regNo, this.colour, this.slotNumber);
         }
     }
 
-    public static RequestBuilder builder(){
+    public static RequestBuilder builder() {
         return new RequestBuilder();
     }
 }

@@ -11,7 +11,7 @@ public class CommandUtils {
         try {
             Integer i = Integer.parseInt(s);
 
-            if(i <= 0){
+            if (i <= 0) {
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -21,28 +21,28 @@ public class CommandUtils {
     }
 
     public static boolean isValidRegNo(String s) {
-        if(s == null || s.length() == 0){
+        if (s == null || s.length() == 0) {
             return false;
         }
         String[] tokens = s.split("-");
-        if(tokens.length != 4){
+        if (tokens.length != 4) {
             return false;
         }
         return true;
     }
 
     public static boolean isValidColour(String s) {
-        if(s == null || s.length() == 0){
+        if (s == null || s.length() == 0) {
             return false;
         }
 
         Optional<Colour> optionalColour = Colour.getColourByName(s);
-        return optionalColour.isPresent() ? true: false;
+        return optionalColour.isPresent() ? true : false;
     }
 
 
-    public static Optional<Command> getCommand(String s){
-        if(s == null){
+    public static Optional<Command> getCommand(String s) {
+        if (s == null) {
             return Optional.empty();
         }
         String[] tokens = s.split(" ");
